@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>登入頁面</title>
+</head>
+<body>
+  <h2>登入系統</h2>
+  <button id="loginBtn">使用 Google 帳號登入</button>
+  <div id="userInfo" style="margin-top:20px;"></div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+  <script>
+    // 你的 Firebase 設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyCva1UyFo7Rt8fn-1kiCCpmg_La7QV2qIg",
+      authDomain: "ems-system-b3c5e.firebaseapp.com",
+      projectId: "ems-system-b3c5e",
+      storageBucket: "ems-system-b3c5e.firebasestorage.app",
+      messagingSenderId: "598303767463",
+      appId: "1:598303767463:web:cdddce69470375e2c5d482",
+      measurementId: "G-2SXTCZ8FBD"
+    };
+
+    // 初始化 Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // 綁定按鈕
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(result => {
+          const user = result.user;
+          document.getElementById("userInfo").innerHTML = `
+            <p>已登入：${user.displayName} (${user.email})</p>
+            <img src="${user.photoURL}" width="50" />
+          `;
+        })
+        .catch(error => {
+          console.error("登入錯誤：", error.message);
+        });
+    });
+  </script>
+</body>
+</html>
